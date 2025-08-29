@@ -50,20 +50,16 @@ public class ChallengeService {
     }
 
     private String solveSqlProblem() {
-        // Placeholder for the SQL query.
-        // The registration number "REG12347" ends with 47 (odd).
-        // I will add the actual query here once you provide the problem description.
+        // The registration number "REG12347" ends with 47 (odd), so this is Question 1.
         System.out.println("Solving SQL problem for odd registration number...");
-        return "SELECT your_column FROM your_table WHERE your_condition;";
+        return "SELECT p.AMOUNT AS SALARY, CONCAT(e.FIRST_NAME, ' ', e.LAST_NAME) AS NAME, TIMESTAMPDIFF(YEAR, e.DOB, CURDATE()) AS AGE, d.DEPARTMENT_NAME FROM PAYMENTS p JOIN EMPLOYEE e ON p.EMP_ID = e.EMP_ID JOIN DEPARTMENT d ON e.DEPARTMENT = d.DEPARTMENT_ID WHERE EXTRACT(DAY FROM p.PAYMENT_TIME) != 1 ORDER BY p.AMOUNT DESC LIMIT 1";
     }
 
     private Mono<String> submitSolution(String webhookUrl, String accessToken, String sqlQuery) {
         SolutionRequest solutionRequest = new SolutionRequest(sqlQuery);
         System.out.println("Submitting solution: " + solutionRequest);
-        System.out.println("Webhook URL: " + webhookUrl);
-
-        // The submission URL is the base URL + the webhook path from the response
-        // As per instructions, the submission URL is constant.
+        
+        // Per the instructions, the submission URL is a fixed path.
         String submissionUrl = "/testWebhook/JAVA";
 
         return WebClient.create(apiBaseUrl).post()
